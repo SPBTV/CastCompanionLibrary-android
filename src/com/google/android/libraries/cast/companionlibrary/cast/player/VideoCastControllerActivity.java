@@ -77,7 +77,7 @@ public class VideoCastControllerActivity extends AppCompatActivity implements
     public static final String TASK_TAG = "task";
     public static final String DIALOG_TAG = "dialog";
     private VideoCastManager mCastManager;
-    private View mPageView;
+    private ImageView mPageView;
     private ImageButton mPlayPause;
     private TextView mLiveText;
     private TextView mStart;
@@ -171,7 +171,7 @@ public class VideoCastControllerActivity extends AppCompatActivity implements
         mPauseDrawable = getResources().getDrawable(R.drawable.ic_pause_circle_white_80dp);
         mPlayDrawable = getResources().getDrawable(R.drawable.ic_play_circle_white_80dp);
         mStopDrawable = getResources().getDrawable(R.drawable.ic_stop_circle_white_80dp);
-        mPageView = findViewById(R.id.pageview);
+        mPageView = (ImageView) findViewById(R.id.pageview);
         mPlayPause = (ImageButton) findViewById(R.id.play_pause_toggle);
         mLiveText = (TextView) findViewById(R.id.live_text);
         mStart = (TextView) findViewById(R.id.start_text);
@@ -436,11 +436,7 @@ public class VideoCastControllerActivity extends AppCompatActivity implements
     @Override
     public void setImage(Bitmap bitmap) {
         if (bitmap != null) {
-            if (mPageView instanceof ImageView) {
-                ((ImageView) mPageView).setImageBitmap(bitmap);
-            } else {
-                mPageView.setBackgroundDrawable(new BitmapDrawable(getResources(), bitmap));
-            }
+            mPageView.setImageBitmap(bitmap);
         }
     }
 

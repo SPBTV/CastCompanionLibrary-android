@@ -16,9 +16,6 @@
 
 package com.google.android.libraries.cast.companionlibrary.cast.player;
 
-import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGD;
-import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
-
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaQueueItem;
@@ -36,11 +33,14 @@ import com.google.android.libraries.cast.companionlibrary.utils.FetchBitmapTask;
 import com.google.android.libraries.cast.companionlibrary.utils.LogUtils;
 import com.google.android.libraries.cast.companionlibrary.utils.Utils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -53,13 +53,11 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.SeekBar;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGD;
+import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
 
 /**
  * A fragment that provides a mechanism to retain the state and other needed objects for
@@ -142,7 +140,7 @@ public class VideoCastControllerFragment extends Fragment implements
                 mOverallState = OverallState.AUTHORIZING;
                 mMediaAuthService = mCastManager.getMediaAuthService();
                 handleMediaAuthTask(mMediaAuthService);
-                showImage(Utils.getImageUri(mMediaAuthService.getMediaInfo(), 1));
+                showImage(getPosterImage(mMediaAuthService.getMediaInfo()));
             }
         } else if (mediaWrapper != null) {
             mOverallState = OverallState.PLAYBACK;
@@ -161,6 +159,18 @@ public class VideoCastControllerFragment extends Fragment implements
             int startPoint = extras.getInt(VideoCastManager.EXTRA_START_POINT, 0);
             onReady(info, shouldStartPlayback && explicitStartActivity, startPoint, customData);
         }
+    }
+
+    private Uri getPosterImage(MediaInfo mediaInfo) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Uri landscapeImage = Utils.getImageUri(mediaInfo, 2);
+
+            if (landscapeImage != null) {
+                return landscapeImage;
+            }
+        }
+
+        return Utils.getImageUri(mediaInfo, 1);
     }
 
     /*
@@ -415,10 +425,10 @@ public class VideoCastControllerFragment extends Fragment implements
         Uri imageUrl = null;
         if (mSelectedMedia == null) {
             if (mMediaAuthService != null) {
-                imageUrl = Utils.getImageUri(mMediaAuthService.getMediaInfo(), 1);
+                imageUrl = getPosterImage(mMediaAuthService.getMediaInfo());
             }
         } else {
-            imageUrl = Utils.getImageUri(mSelectedMedia, 1);
+            imageUrl = getPosterImage(mSelectedMedia);
         }
         showImage(imageUrl);
         if (mSelectedMedia == null) {
@@ -721,7 +731,7 @@ public class VideoCastControllerFragment extends Fragment implements
         updateOverallState();
         if (mSelectedMedia == null) {
             if (mMediaAuthService != null) {
-                showImage(Utils.getImageUri(mMediaAuthService.getMediaInfo(), 1));
+                showImage(getPosterImage(mMediaAuthService.getMediaInfo()));
             }
         } else {
             updateMetadata();
