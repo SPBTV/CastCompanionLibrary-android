@@ -16,9 +16,6 @@
 
 package com.google.android.libraries.cast.companionlibrary.cast;
 
-import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGD;
-import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
-
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.Cast.CastOptions.Builder;
@@ -60,6 +57,7 @@ import com.google.android.libraries.cast.companionlibrary.widgets.IMiniControlle
 import com.google.android.libraries.cast.companionlibrary.widgets.MiniController;
 import com.google.android.libraries.cast.companionlibrary.widgets.MiniController.OnMiniControllerChangedListener;
 
+import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ComponentName;
@@ -82,9 +80,6 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.accessibility.CaptioningManager;
-
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -96,6 +91,8 @@ import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
+import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGD;
+import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
 
 /**
  * An abstract subclass of {@link BaseCastManager} that is suitable for casting video contents (it
@@ -406,7 +403,7 @@ public class VideoCastManager extends BaseCastManager
      */
     public void startVideoCastControllerActivity(Context context, Bundle mediaWrapper, int position,
             boolean shouldStart, JSONObject customData) {
-        Intent intent = new Intent(context, VideoCastControllerActivity.class);
+        Intent intent = new Intent(context, mTargetActivity);
         intent.putExtra(EXTRA_MEDIA, mediaWrapper);
         intent.putExtra(EXTRA_START_POINT, position);
         intent.putExtra(EXTRA_SHOULD_START, shouldStart);
@@ -440,7 +437,7 @@ public class VideoCastManager extends BaseCastManager
     public void startVideoCastControllerActivity(Context context, MediaAuthService authService) {
         if (authService != null) {
             mAuthService = authService;
-            Intent intent = new Intent(context, VideoCastControllerActivity.class);
+            Intent intent = new Intent(context, mTargetActivity);
             intent.putExtra(EXTRA_HAS_AUTH, true);
             setFlagForStartCastControllerActivity();
             context.startActivity(intent);
