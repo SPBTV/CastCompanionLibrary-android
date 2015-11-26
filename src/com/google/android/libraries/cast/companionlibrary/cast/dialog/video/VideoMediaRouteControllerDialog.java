@@ -37,6 +37,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.MediaRouteControllerDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -161,7 +162,15 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
         hideControls(false, 0);
         MediaMetadata mm = info.getMetadata();
         mTitle.setText(mm.getString(MediaMetadata.KEY_TITLE));
-        mSubTitle.setText(mm.getString(MediaMetadata.KEY_SUBTITLE));
+        String subTitle = mm.getString(MediaMetadata.KEY_SUBTITLE);
+
+        if (TextUtils.isEmpty(subTitle)) {
+            mSubTitle.setVisibility(View.GONE);
+        } else {
+            mSubTitle.setVisibility(View.VISIBLE);
+            mSubTitle.setText(subTitle);
+        }
+
         setIcon(mm.hasImages() ? mm.getImages().get(0).getUrl() : null);
     }
 
