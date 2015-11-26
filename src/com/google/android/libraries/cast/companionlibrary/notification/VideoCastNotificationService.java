@@ -299,7 +299,7 @@ public class VideoCastNotificationService extends Service {
         PendingIntent contentPendingIntent =
                 stackBuilder.getPendingIntent(NOTIFICATION_ID, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        int pauseOrStopResourceId = 0;
+        int pauseOrStopResourceId;
         if (info.getStreamType() == MediaInfo.STREAM_TYPE_LIVE) {
             pauseOrStopResourceId = R.drawable.ic_notification_stop_48dp;
         } else {
@@ -325,7 +325,7 @@ public class VideoCastNotificationService extends Service {
                         .setMediaSession(mCastManager.getMediaSessionCompatToken()))
                 .setOngoing(true)
                 .setShowWhen(false)
-                .setVisibility(Notification.VISIBILITY_PUBLIC);
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
 
         mNotification = builder.build();
