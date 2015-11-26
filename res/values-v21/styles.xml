@@ -16,7 +16,5 @@
   -->
 <resources>
     <!-- Dialog -->
-    <style name="CCLCastDialog" parent="android:Theme.Material.Dialog">
-        <item name="android:windowTitleStyle">@style/CCLCastDialogWindowTitle</item>
-    </style>
+    <style name="CCLCastDialogBase" parent="android:Theme.Material.Dialog" />
 </resources>

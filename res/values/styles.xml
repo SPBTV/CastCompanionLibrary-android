@@ -16,9 +16,11 @@
   -->
 <resources>
     <!-- Dialog -->
-    <style name="CCLCastDialog" parent="@android:style/Theme.Dialog">
+    <style name="CCLCastDialog" parent="CCLCastDialogBase">
         <item name="android:windowTitleStyle">@style/CCLCastDialogWindowTitle</item>
     </style>
+
+    <style name="CCLCastDialogBase" parent="@android:style/Theme.Dialog" />
 
     <style name="CCLCastDialogWindowTitle">
         <item name="android:textSize">22sp</item>
