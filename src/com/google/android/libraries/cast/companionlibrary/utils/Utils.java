@@ -16,8 +16,6 @@
 
 package com.google.android.libraries.cast.companionlibrary.utils;
 
-import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
-
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaQueueItem;
@@ -26,6 +24,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.images.WebImage;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -42,13 +43,10 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
 
 /**
  * A collection of utility methods, all static.
@@ -56,6 +54,7 @@ import java.util.List;
 public final class Utils {
 
     private static final String TAG = LogUtils.makeLogTag(Utils.class);
+    private static final String KEY_MEDIA_TYPE = "media-type";
     private static final String KEY_IMAGES = "images";
     private static final String KEY_URL = "movie-urls";
     private static final String KEY_CONTENT_TYPE = "content-type";
@@ -172,6 +171,23 @@ public final class Utils {
         Bundle wrapper = new Bundle();
         wrapper.putString(MediaMetadata.KEY_TITLE, md.getString(MediaMetadata.KEY_TITLE));
         wrapper.putString(MediaMetadata.KEY_SUBTITLE, md.getString(MediaMetadata.KEY_SUBTITLE));
+        wrapper.putString(MediaMetadata.KEY_ALBUM_TITLE,
+                md.getString(MediaMetadata.KEY_ALBUM_TITLE));
+        wrapper.putString(MediaMetadata.KEY_ALBUM_ARTIST,
+                md.getString(MediaMetadata.KEY_ALBUM_ARTIST));
+        wrapper.putString(MediaMetadata.KEY_COMPOSER, md.getString(MediaMetadata.KEY_COMPOSER));
+        wrapper.putString(MediaMetadata.KEY_SERIES_TITLE,
+                md.getString(MediaMetadata.KEY_SERIES_TITLE));
+        wrapper.putInt(MediaMetadata.KEY_SEASON_NUMBER,
+                md.getInt(MediaMetadata.KEY_SEASON_NUMBER));
+        wrapper.putInt(MediaMetadata.KEY_EPISODE_NUMBER,
+                md.getInt(MediaMetadata.KEY_EPISODE_NUMBER));
+        Calendar releaseCalendar = md.getDate(MediaMetadata.KEY_RELEASE_DATE);
+        if (releaseCalendar != null) {
+            long releaseMillis = releaseCalendar.getTimeInMillis();
+            wrapper.putLong(MediaMetadata.KEY_RELEASE_DATE, releaseMillis);
+        }
+        wrapper.putInt(KEY_MEDIA_TYPE, info.getMetadata().getMediaType());
         wrapper.putString(KEY_URL, info.getContentId());
         wrapper.putString(MediaMetadata.KEY_STUDIO, md.getString(MediaMetadata.KEY_STUDIO));
         wrapper.putString(KEY_CONTENT_TYPE, info.getContentType());
@@ -227,12 +243,31 @@ public final class Utils {
             return null;
         }
 
-        MediaMetadata metaData = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
+        MediaMetadata metaData = new MediaMetadata(wrapper.getInt(KEY_MEDIA_TYPE));
 
         metaData.putString(MediaMetadata.KEY_SUBTITLE,
                 wrapper.getString(MediaMetadata.KEY_SUBTITLE));
         metaData.putString(MediaMetadata.KEY_TITLE, wrapper.getString(MediaMetadata.KEY_TITLE));
         metaData.putString(MediaMetadata.KEY_STUDIO, wrapper.getString(MediaMetadata.KEY_STUDIO));
+        metaData.putString(MediaMetadata.KEY_ALBUM_ARTIST,
+                wrapper.getString(MediaMetadata.KEY_ALBUM_ARTIST));
+        metaData.putString(MediaMetadata.KEY_ALBUM_TITLE,
+                wrapper.getString(MediaMetadata.KEY_ALBUM_TITLE));
+        metaData.putString(MediaMetadata.KEY_COMPOSER,
+                wrapper.getString(MediaMetadata.KEY_COMPOSER));
+        metaData.putString(MediaMetadata.KEY_SERIES_TITLE,
+                wrapper.getString(MediaMetadata.KEY_SERIES_TITLE));
+        metaData.putInt(MediaMetadata.KEY_SEASON_NUMBER,
+                wrapper.getInt(MediaMetadata.KEY_SEASON_NUMBER));
+        metaData.putInt(MediaMetadata.KEY_EPISODE_NUMBER,
+                wrapper.getInt(MediaMetadata.KEY_EPISODE_NUMBER));
+
+        long releaseDateMillis = wrapper.getLong(MediaMetadata.KEY_RELEASE_DATE, 0);
+        if (releaseDateMillis > 0) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(releaseDateMillis);
+            metaData.putDate(MediaMetadata.KEY_RELEASE_DATE, calendar);
+        }
         ArrayList<String> images = wrapper.getStringArrayList(KEY_IMAGES);
         if (images != null && !images.isEmpty()) {
             for (String url : images) {
@@ -358,7 +393,7 @@ public final class Utils {
         }
         MediaQueueItem[] rebuiltQueue = new MediaQueueItem[items.size()];
         for (int i = 0; i < items.size(); i++) {
-            rebuiltQueue[i] =rebuildQueueItem(items.get(i));
+            rebuiltQueue[i] = rebuildQueueItem(items.get(i));
         }
 
         return rebuiltQueue;

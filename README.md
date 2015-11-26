@@ -30,6 +30,48 @@ Google Cast Developers Community on Google+ [http://goo.gl/TPLDxj](http://goo.gl
 
 ## Change List
 
+2.6.1
+ * Addressing #245
+ * Fixing a small bug where in the custom CastControllerDialog, text was not readable when there was no
+ media information
+ * Added the appropriate PendingIntent to the MediaSessionCompat; this is in preparation to move
+ to the CastControllerDialog from the media router library; there is currently a missing feature in
+ that library that doesn't allow us to use this PendingIntent but when that feature gets added, this
+ PendingIntent will be used to send the user to the appropriate target activity.
+ * Updated Play Services and support libraries to the latest versions.
+
+2.6
+ * Addressing #242, #243
+ * Some enhancement around usage of MediaSessionCompat and its setup.
+ * Updated the appcompat and mediarouter support libraries to the latest version (23.1.0). Due to
+ the changes in this version of media router library, the styling of the VideoCastControllerDialog
+ is somewhat different, please make sure colors are fine with your application theme and if needed,
+ update the appropriate resource aliases and color in your client application.
+
+2.5.2
+ * Fixing issue #233
+
+2.5.1
+ * Fixed an issue where not setting the LaunchOptions would have resulted in receiver not loading. Now the
+   default behavior is to launch the app with the default value of relaunchIfRunning set to false.
+
+2.5
+ * MiniController component now has an attribute "auto_setup" that if set to "true", it instructs the
+   framework to fully configure the component, so that clients would only need to add the MiniController
+   to their layout and the rest will be handled by the library (i.e. if that attribute is set to true,
+   there is no need to register or unregister that component with the cast manger anymore). The default
+   value is "false" which falls back to the old behavior.
+ * You can now set the LaunchOptions soon after initializing the Cast Manager by calling VideoCastManager.setLaunchOptions()
+   (same with DataCastManager).
+ * A new callback (onDisconnectionReason(int reason)) has been added that can inform the registered listeners
+   of the reason a disconnect has happened. Understanding the reason behind a disconnect is somewhat non-trivial
+   so this will hopefully make that task easier; see the JavaDoc for more details.
+ * Now you can have the library automatically try to reconnect by enabling the FEATURE_AUTO_RECONNECT after
+   initializing the Cast Manager; this means clients don't need to call reconnectSessionIfPossible() if that
+   feature is enabled.
+ * Updated the documentation.
+ * Some cleanup, fixing some JavaDocs and comments, etc.
+
 2.4
  * Fixed a number of bugs (#205, #204, #203)
  * Prepared the library for Marshmallow permissions related to the Play Services
