@@ -501,18 +501,7 @@ public class VideoCastControllerFragment extends Fragment implements
                         }
                         break;
                     case MediaStatus.IDLE_REASON_CANCELED:
-                        try {
-                            if (mCastManager.isRemoteStreamLive()) {
-                                if (mPlaybackState != MediaStatus.PLAYER_STATE_IDLE) {
-                                    mPlaybackState = MediaStatus.PLAYER_STATE_IDLE;
-                                    mCastController.setPlaybackStatus(mPlaybackState);
-                                }
-                            } else {
-                                mCastController.closeActivity();
-                            }
-                        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-                            LOGD(TAG, "Failed to determine if stream is live", e);
-                        }
+                        mCastController.closeActivity();
                         break;
                     case MediaStatus.IDLE_REASON_INTERRUPTED:
                         mPlaybackState = MediaStatus.PLAYER_STATE_IDLE;
@@ -726,30 +715,14 @@ public class VideoCastControllerFragment extends Fragment implements
 
     private void togglePlayback() throws CastException, TransientNetworkDisconnectionException,
             NoConnectionException {
-        switch (mPlaybackState) {
-            case MediaStatus.PLAYER_STATE_PAUSED:
-                mCastManager.play();
-                mPlaybackState = MediaStatus.PLAYER_STATE_BUFFERING;
-                restartTrickplayTimer();
-                break;
-            case MediaStatus.PLAYER_STATE_PLAYING:
-                mCastManager.pause();
-                mPlaybackState = MediaStatus.PLAYER_STATE_BUFFERING;
-                break;
-            case MediaStatus.PLAYER_STATE_IDLE:
-                if ((mSelectedMedia.getStreamType() == MediaInfo.STREAM_TYPE_LIVE)
-                        && (mCastManager.getIdleReason() == MediaStatus.IDLE_REASON_CANCELED)) {
-                    mCastManager.play();
-                } else {
-                    mCastManager.loadMedia(mSelectedMedia, true, 0);
-                }
-                mPlaybackState = MediaStatus.PLAYER_STATE_BUFFERING;
-                restartTrickplayTimer();
-                break;
-            default:
-                break;
+        if (mPlaybackState == MediaStatus.PLAYER_STATE_PAUSED
+                || mPlaybackState == MediaStatus.PLAYER_STATE_IDLE) {
+            restartTrickplayTimer();
         }
+
+        mPlaybackState = MediaStatus.PLAYER_STATE_BUFFERING;
         mCastController.setPlaybackStatus(mPlaybackState);
+        mCastManager.togglePlayback();
     }
 
     @Override

@@ -325,16 +325,7 @@ public class VideoCastManager extends BaseCastManager
     @Override
     public void onPlayPauseClicked(View v) throws CastException,
             TransientNetworkDisconnectionException, NoConnectionException {
-        checkConnectivity();
-        if (mState == MediaStatus.PLAYER_STATE_PLAYING) {
-            pause();
-        } else {
-            boolean isLive = isRemoteStreamLive();
-            if ((mState == MediaStatus.PLAYER_STATE_PAUSED && !isLive)
-                    || (mState == MediaStatus.PLAYER_STATE_IDLE && isLive)) {
-                play();
-            }
-        }
+        togglePlayback();
     }
 
     /*
@@ -870,8 +861,10 @@ public class VideoCastManager extends BaseCastManager
     @Override
     protected void onApplicationConnected(ApplicationMetadata appMetadata,
             String applicationStatus, String sessionId, boolean wasLaunched) {
-        LOGD(TAG, "onApplicationConnected() reached with sessionId: " + sessionId
-                + ", and mReconnectionStatus=" + mReconnectionStatus);
+        LOGD(TAG, "onApplicationConnected() reached with sessionId: "
+                + sessionId
+                + ", and mReconnectionStatus="
+                + mReconnectionStatus);
         mApplicationErrorCode = NO_APPLICATION_ERROR;
         if (mReconnectionStatus == RECONNECTION_STATUS_IN_PROGRESS) {
             // we have tried to reconnect and successfully launched the app, so
@@ -1119,8 +1112,7 @@ public class VideoCastManager extends BaseCastManager
         }
         mRemoteMediaPlayer
                 .queueInsertItems(mApiClient, itemsToInsert, insertBeforeItemId, customData)
-                .setResultCallback(
-                        new ResultCallback<MediaChannelResult>() {
+                .setResultCallback(new ResultCallback<MediaChannelResult>() {
 
                             @Override
                             public void onResult(MediaChannelResult result) {
@@ -1337,8 +1329,7 @@ public class VideoCastManager extends BaseCastManager
         }
         mRemoteMediaPlayer
                 .queueReorderItems(mApiClient, itemIdsToReorder, insertBeforeItemId, customData)
-                .setResultCallback(
-                        new ResultCallback<MediaChannelResult>() {
+                .setResultCallback(new ResultCallback<MediaChannelResult>() {
 
                             @Override
                             public void onResult(MediaChannelResult result) {
@@ -1371,14 +1362,14 @@ public class VideoCastManager extends BaseCastManager
             throws TransientNetworkDisconnectionException, NoConnectionException {
         mRemoteMediaPlayer
                 .queueMoveItemToNewIndex(mApiClient, itemId, newIndex, customData)
-                .setResultCallback(
-                        new ResultCallback<MediaChannelResult>() {
+                .setResultCallback(new ResultCallback<MediaChannelResult>() {
 
                             @Override
                             public void onResult(MediaChannelResult result) {
                                 for (VideoCastConsumer consumer : mVideoConsumers) {
                                     consumer.onMediaQueueOperationResult(QUEUE_OPERATION_MOVE,
-                                            result.getStatus().getStatusCode());;
+                                            result.getStatus().getStatusCode());
+                                    ;
                                 }
                             }
                         });
@@ -1397,8 +1388,7 @@ public class VideoCastManager extends BaseCastManager
             throws TransientNetworkDisconnectionException, NoConnectionException {
         mRemoteMediaPlayer
                 .queueAppendItem(mApiClient, item, customData)
-                .setResultCallback(
-                        new ResultCallback<MediaChannelResult>() {
+                .setResultCallback(new ResultCallback<MediaChannelResult>() {
 
                             @Override
                             public void onResult(MediaChannelResult result) {
@@ -1634,8 +1624,7 @@ public class VideoCastManager extends BaseCastManager
                         }
                     }
 
-                }
-        );
+                });
     }
 
     /**
@@ -1765,14 +1754,16 @@ public class VideoCastManager extends BaseCastManager
         checkConnectivity();
         boolean isPlaying = isRemoteMediaPlaying();
         if (isPlaying) {
-            pause();
-        } else {
-            if (mState == MediaStatus.PLAYER_STATE_IDLE
-                    && mIdleReason == MediaStatus.IDLE_REASON_FINISHED) {
-                loadMedia(getRemoteMediaInformation(), true, 0);
+            if (isRemoteStreamLive()) {
+                stop();
             } else {
-                play();
+                pause();
             }
+        } else if (mState == MediaStatus.PLAYER_STATE_IDLE
+                    && mIdleReason == MediaStatus.IDLE_REASON_FINISHED) {
+            loadMedia(getRemoteMediaInformation(), true, 0);
+        } else {
+            play();
         }
     }
 
@@ -2081,7 +2072,7 @@ public class VideoCastManager extends BaseCastManager
                         break;
                     case MediaStatus.IDLE_REASON_CANCELED:
                         LOGD(TAG, "onRemoteMediaPlayerStatusUpdated(): IDLE reason = CANCELLED");
-                        makeUiHidden = !isRemoteStreamLive();
+                        makeUiHidden = true;
                         break;
                     case MediaStatus.IDLE_REASON_INTERRUPTED:
                         if (mMediaStatus.getLoadingItemId() == MediaQueueItem.INVALID_ITEM_ID) {

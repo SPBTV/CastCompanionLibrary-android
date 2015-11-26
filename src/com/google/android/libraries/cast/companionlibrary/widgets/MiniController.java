@@ -346,22 +346,8 @@ public class MiniController extends RelativeLayout implements IMiniController {
                 setLoadingVisibility(false);
                 break;
             case MediaStatus.PLAYER_STATE_IDLE:
-                switch (mStreamType) {
-                    case MediaInfo.STREAM_TYPE_BUFFERED:
-                        mPlayPause.setVisibility(View.INVISIBLE);
-                        setLoadingVisibility(false);
-                        break;
-                    case MediaInfo.STREAM_TYPE_LIVE:
-                        if (idleReason == MediaStatus.IDLE_REASON_CANCELED) {
-                            mPlayPause.setVisibility(View.VISIBLE);
-                            mPlayPause.setImageDrawable(mPlayDrawable);
-                            setLoadingVisibility(false);
-                        } else {
-                            mPlayPause.setVisibility(View.INVISIBLE);
-                            setLoadingVisibility(false);
-                        }
-                        break;
-                }
+                mPlayPause.setVisibility(View.INVISIBLE);
+                setLoadingVisibility(false);
                 break;
             case MediaStatus.PLAYER_STATE_BUFFERING:
                 mPlayPause.setVisibility(View.INVISIBLE);
