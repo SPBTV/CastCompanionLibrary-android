@@ -19,8 +19,34 @@
     android:versionName="2.6.1" >
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="23" />
+        android:minSdkVersion="10" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <application>
+
+        <receiver
+            android:name="com.google.android.libraries.cast.companionlibrary.remotecontrol.VideoIntentReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.google.android.libraries.cast.companionlibrary.action.toggleplayback" />
+                <action android:name="com.google.android.libraries.cast.companionlibrary.action.stop" />
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+
+        </receiver>
+
+        <service
+            android:name="com.google.android.libraries.cast.companionlibrary.notification.VideoCastNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.libraries.cast.companionlibrary.action.notificationvisibility" />
+            </intent-filter>
+        </service>
+
+        <service android:name="com.google.android.libraries.cast.companionlibrary.cast.reconnection.ReconnectionService" />
+
+
+    </application>
 
 </manifest>
