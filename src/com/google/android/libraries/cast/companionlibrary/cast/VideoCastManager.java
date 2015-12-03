@@ -144,6 +144,7 @@ public class VideoCastManager extends BaseCastManager
     public static final String EXTRA_START_POINT = "startPoint";
     public static final String EXTRA_SHOULD_START = "shouldStart";
     public static final String EXTRA_CUSTOM_DATA = "customData";
+    public static final String ACTION_MEDIA_ROUTE_CONTROLLER = "actionMediaRouteController";
     public static final double DEFAULT_VOLUME_STEP = 0.05;
     private static final long PROGRESS_UPDATE_INTERVAL_MS = TimeUnit.SECONDS.toMillis(1);
     private double mVolumeStep = DEFAULT_VOLUME_STEP;
@@ -337,6 +338,7 @@ public class VideoCastManager extends BaseCastManager
     public void onTargetActivityInvoked(Context context) throws
             TransientNetworkDisconnectionException, NoConnectionException {
         Intent intent = new Intent(context, mTargetActivity);
+        intent.setAction(ACTION_MEDIA_ROUTE_CONTROLLER);
         intent.putExtra(EXTRA_MEDIA, Utils.mediaInfoToBundle(getRemoteMediaInformation()));
         context.startActivity(intent);
     }
@@ -401,6 +403,7 @@ public class VideoCastManager extends BaseCastManager
     public void startVideoCastControllerActivity(Context context, Bundle mediaWrapper, int position,
             boolean shouldStart, JSONObject customData) {
         Intent intent = new Intent(context, mTargetActivity);
+        intent.setAction(ACTION_MEDIA_ROUTE_CONTROLLER);
         intent.putExtra(EXTRA_MEDIA, mediaWrapper);
         intent.putExtra(EXTRA_START_POINT, position);
         intent.putExtra(EXTRA_SHOULD_START, shouldStart);
@@ -435,6 +438,7 @@ public class VideoCastManager extends BaseCastManager
         if (authService != null) {
             mAuthService = authService;
             Intent intent = new Intent(context, mTargetActivity);
+            intent.setAction(ACTION_MEDIA_ROUTE_CONTROLLER);
             intent.putExtra(EXTRA_HAS_AUTH, true);
             setFlagForStartCastControllerActivity();
             context.startActivity(intent);
@@ -855,7 +859,6 @@ public class VideoCastManager extends BaseCastManager
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
             LOGE(TAG, "Failed to get volume", e);
         }
-
     }
 
     @Override

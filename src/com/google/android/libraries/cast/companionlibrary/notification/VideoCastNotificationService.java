@@ -278,6 +278,8 @@ public class VideoCastNotificationService extends Service {
         // Main Content PendingIntent
         Bundle mediaWrapper = Utils.mediaInfoToBundle(mCastManager.getRemoteMediaInformation());
         Intent contentIntent = new Intent(this, mTargetActivity);
+        contentIntent.setAction(VideoCastManager.ACTION_MEDIA_ROUTE_CONTROLLER);
+
         contentIntent.putExtra(VideoCastManager.EXTRA_MEDIA, mediaWrapper);
 
         // Media metadata
