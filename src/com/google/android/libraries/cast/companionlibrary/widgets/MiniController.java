@@ -211,7 +211,7 @@ public class MiniController extends RelativeLayout implements IMiniController {
                     setLoadingVisibility(true);
                     try {
                         mListener.onPlayPauseClicked(v);
-                    } catch (CastException e) {
+                    } catch (CastException | IllegalStateException e) {
                         mListener.onFailed(R.string.ccl_failed_perform_action,
                                 UNDEFINED_STATUS_CODE);
                     } catch (TransientNetworkDisconnectionException e) {
