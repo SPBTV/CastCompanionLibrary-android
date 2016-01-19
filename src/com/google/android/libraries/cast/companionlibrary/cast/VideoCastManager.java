@@ -2506,6 +2506,8 @@ public class VideoCastManager extends BaseCastManager
                     if (isConnected() && isRemoteMediaLoaded()) {
                         updateMiniController(miniController);
                         miniController.setVisibility(View.VISIBLE);
+                    } else {
+                        miniController.setVisibility(View.GONE);
                     }
                 } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
                     LOGE(TAG, "Failed to get the status of media playback on receiver", e);
