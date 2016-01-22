@@ -217,27 +217,11 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
                     mPausePlay.setVisibility(View.INVISIBLE);
                     setLoadingVisibility(false);
 
-                    if (mState == MediaStatus.PLAYER_STATE_IDLE
-                            && mCastManager.getIdleReason() == MediaStatus.IDLE_REASON_FINISHED) {
+                    if (mCastManager.getIdleReason() == MediaStatus.IDLE_REASON_FINISHED
+                            || mStreamType == MediaInfo.STREAM_TYPE_LIVE) {
                         hideControls(true, R.string.ccl_no_media_info);
-                    } else {
-                        switch (mStreamType) {
-                            case MediaInfo.STREAM_TYPE_BUFFERED:
-                                mPausePlay.setVisibility(View.INVISIBLE);
-                                setLoadingVisibility(false);
-                                break;
-                            case MediaInfo.STREAM_TYPE_LIVE:
-                                int idleReason = mCastManager.getIdleReason();
-                                if (idleReason == MediaStatus.IDLE_REASON_CANCELED) {
-                                    mPausePlay.setImageDrawable(mPlayDrawable);
-                                    adjustControlsVisibility(true);
-                                } else {
-                                    mPausePlay.setVisibility(View.INVISIBLE);
-                                    setLoadingVisibility(false);
-                                }
-                                break;
-                        }
                     }
+
                     break;
                 case MediaStatus.PLAYER_STATE_BUFFERING:
                     adjustControlsVisibility(false);
