@@ -522,10 +522,9 @@ public class VideoCastManager extends BaseCastManager
             case MediaStatus.PLAYER_STATE_BUFFERING:
                 return true;
             case MediaStatus.PLAYER_STATE_IDLE:
-                return isRemoteStreamLive() && (idleReason == MediaStatus.IDLE_REASON_CANCELED);
             default:
+                return false;
         }
-        return false;
     }
 
     /*
@@ -2076,6 +2075,7 @@ public class VideoCastManager extends BaseCastManager
                     case MediaStatus.IDLE_REASON_CANCELED:
                         LOGD(TAG, "onRemoteMediaPlayerStatusUpdated(): IDLE reason = CANCELLED");
                         makeUiHidden = true;
+                        clearMediaSession();
                         break;
                     case MediaStatus.IDLE_REASON_INTERRUPTED:
                         if (mMediaStatus.getLoadingItemId() == MediaQueueItem.INVALID_ITEM_ID) {
