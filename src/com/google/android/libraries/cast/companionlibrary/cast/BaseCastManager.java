@@ -375,6 +375,11 @@ public abstract class BaseCastManager
      */
     public final MenuItem addMediaRouterButton(Menu menu, int menuResourceId) {
         MenuItem mediaRouteMenuItem = menu.findItem(menuResourceId);
+
+        if (mediaRouteMenuItem == null) {
+            return null;
+        }
+
         MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider)
                 MenuItemCompat.getActionProvider(mediaRouteMenuItem);
         mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
