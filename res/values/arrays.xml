@@ -55,7 +55,7 @@
     </string-array>
 
     <!-- Do not translate below this line -->
-    <string-array name="ccl_prefs_caption_font_scale_values">
+    <string-array name="ccl_prefs_caption_font_scale_values" translatable="false">
         <item>0.5</item>
         <item>0.75</item>
         <item>1.0</item>
@@ -63,26 +63,26 @@
         <item>2.0</item>
     </string-array>
 
-    <string-array name="ccl_prefs_caption_font_family_values">
+    <string-array name="ccl_prefs_caption_font_family_values" translatable="false">
         <item>FONT_FAMILY_SANS_SERIF</item>
         <item>FONT_FAMILY_SERIF</item>
         <item>FONT_FAMILY_MONOSPACED_SANS_SERIF</item>
     </string-array>
 
-    <string-array name="ccl_prefs_caption_opacity_values">
+    <string-array name="ccl_prefs_caption_opacity_values" translatable="false">
         <item>3F</item>
         <item>80</item>
         <item>BF</item>
         <item>FF</item>
     </string-array>
 
-    <string-array name="ccl_prefs_caption_edge_type_values">
+    <string-array name="ccl_prefs_caption_edge_type_values" translatable="false">
         <item>EDGE_TYPE_NONE</item>
         <item>EDGE_TYPE_OUTLINE</item>
         <item>EDGE_TYPE_DROP_SHADOW</item>
     </string-array>
 
-    <string-array name="ccl_prefs_caption_color_values">
+    <string-array name="ccl_prefs_caption_color_values" translatable="false">
         <item>#FFFFFF</item> <!-- white -->
         <item>#000000</item> <!-- black -->
         <item>#FF0000</item> <!-- red -->

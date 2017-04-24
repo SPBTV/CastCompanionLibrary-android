@@ -30,23 +30,23 @@
     <string name="ccl_prefs_caption_disabled">Disabled</string>
 
     <!-- Prefs keys -->
-    <string name="ccl_key_caption_enabled">ccl_caption_enabled</string>
-    <string name="ccl_key_caption_font_family">ccl_caption_font_family</string>
-    <string name="ccl_key_caption_font_scale">ccl_caption_font_scale</string>
-    <string name="ccl_key_caption_text_color">ccl_caption_text_color</string>
-    <string name="ccl_key_caption_text_opacity">ccl_caption_text_opacity</string>
-    <string name="ccl_key_caption_edge_type">ccl_caption_edge_type</string>
-    <string name="ccl_key_caption_background_color">ccl_caption_background_color</string>
-    <string name="ccl_key_caption_background_opacity">ccl_caption_font_background_opacity</string>
+    <string name="ccl_key_caption_enabled" translatable="false">ccl_caption_enabled</string>
+    <string name="ccl_key_caption_font_family" translatable="false">ccl_caption_font_family</string>
+    <string name="ccl_key_caption_font_scale" translatable="false">ccl_caption_font_scale</string>
+    <string name="ccl_key_caption_text_color" translatable="false">ccl_caption_text_color</string>
+    <string name="ccl_key_caption_text_opacity" translatable="false">ccl_caption_text_opacity</string>
+    <string name="ccl_key_caption_edge_type" translatable="false">ccl_caption_edge_type</string>
+    <string name="ccl_key_caption_background_color" translatable="false">ccl_caption_background_color</string>
+    <string name="ccl_key_caption_background_opacity" translatable="false">ccl_caption_font_background_opacity</string>
 
     <!-- Default Values -->
-    <string name="ccl_prefs_caption_font_scale_value_default">1.0</string>
-    <string name="ccl_prefs_caption_font_family_value_default">FONT_FAMILY_SERIF</string>
-    <string name="ccl_prefs_caption_text_color_value_default">#FFFFFF</string>
-    <string name="ccl_prefs_caption_text_opacity_value_default">FF</string>
-    <string name="ccl_prefs_caption_edge_type_value_default">EDGE_TYPE_NONE</string>
-    <string name="ccl_prefs_caption_background_color_value_default">#000000</string>
-    <string name="ccl_prefs_caption_background_opacity_value_default">FF</string>
+    <string name="ccl_prefs_caption_font_scale_value_default" translatable="false">1.0</string>
+    <string name="ccl_prefs_caption_font_family_value_default" translatable="false">FONT_FAMILY_SERIF</string>
+    <string name="ccl_prefs_caption_text_color_value_default" translatable="false">#FFFFFF</string>
+    <string name="ccl_prefs_caption_text_opacity_value_default" translatable="false">FF</string>
+    <string name="ccl_prefs_caption_edge_type_value_default" translatable="false">EDGE_TYPE_NONE</string>
+    <string name="ccl_prefs_caption_background_color_value_default" translatable="false">#000000</string>
+    <string name="ccl_prefs_caption_background_opacity_value_default" translatable="false">FF</string>
     <string name="ccl_pick_tracks">Tracks</string>
 
     <string name="ccl_caption_subtitles">Subtitles</string>
