@@ -163,7 +163,7 @@ public final class Utils {
      * @see <code>bundleToMediaInfo()</code>
      */
     public static Bundle mediaInfoToBundle(MediaInfo info) {
-        if (info == null) {
+        if (info == null || info.getMetadata() == null) {
             return null;
         }
 

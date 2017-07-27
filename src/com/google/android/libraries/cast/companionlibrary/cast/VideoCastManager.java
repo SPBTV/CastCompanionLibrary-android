@@ -2275,7 +2275,7 @@ public class VideoCastManager extends BaseCastManager
      * full-screen image so we need to separately handle these two cases.
      */
     private void setBitmapForLockScreen(MediaInfo video) {
-        if (video == null || mMediaSessionCompat == null) {
+        if (video == null || mMediaSessionCompat == null || video.getMetadata() == null) {
             return;
         }
         Uri imgUrl = null;
@@ -2372,7 +2372,7 @@ public class VideoCastManager extends BaseCastManager
 
         try {
             MediaInfo info = getRemoteMediaInformation();
-            if (info == null) {
+            if (info == null || info.getMetadata() == null) {
                 return;
             }
             final MediaMetadata mm = info.getMetadata();

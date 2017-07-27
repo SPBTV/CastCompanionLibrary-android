@@ -154,7 +154,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
             hideControls(true, R.string.ccl_failed_no_connection_short);
             return;
         }
-        if (info == null) {
+        if (info == null || info.getMetadata() == null) {
             hideControls(true, R.string.ccl_no_media_info);
             return;
         }

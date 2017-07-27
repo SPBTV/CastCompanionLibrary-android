@@ -152,7 +152,7 @@ public class VideoCastNotificationService extends Service {
 
     private void setUpNotification(final MediaInfo info)
             throws TransientNetworkDisconnectionException, NoConnectionException {
-        if (info == null) {
+        if (info == null || info.getMetadata() == null) {
             return;
         }
         if (mBitmapDecoderTask != null) {
