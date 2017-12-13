@@ -1626,7 +1626,7 @@ public class VideoCastManager extends BaseCastManager
                         }
                     }
 
-                });
+                }, 7, TimeUnit.SECONDS);
     }
 
     /**
