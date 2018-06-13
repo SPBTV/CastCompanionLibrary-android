@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${supportLibsVersion}"
-    compile "com.android.support:mediarouter-v7:${mediaRouterVersion}"
-    compile "com.google.android.gms:play-services-cast:${googlePlayVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibsVersion}"
+    implementation "com.android.support:mediarouter-v7:${mediaRouterVersion}"
+    implementation "com.google.android.gms:play-services-cast:${googlePlayVersion}"
 }
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    
 
     defaultConfig {
         targetSdkVersion rootProject.ext.targetSdkVersion
